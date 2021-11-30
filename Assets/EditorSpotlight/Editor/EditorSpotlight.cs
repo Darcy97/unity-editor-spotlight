@@ -312,10 +312,6 @@ namespace EditorSpotlight
             var posYMax       = posYMin + cellHeight;
             var visibleYStart = _scrollPos.y;
             var visibleYEnd   = VisibleCountPerView * cellHeight + _scrollPos.y;
-            
-            // Debug.Log ("cur item posY: " + posYMin);
-            // Debug.Log ("visibleYStart: " + visibleYStart);
-            // Debug.Log ("visibleYEnd: " + visibleYEnd);
 
             if (posYMin < visibleYStart)
             {
