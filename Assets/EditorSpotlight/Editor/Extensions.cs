@@ -14,16 +14,16 @@ namespace EditorSpotlight
 {
     public static class Extensions
     {
-        private static Type[] GetAllDerivedTypes (this AppDomain aAppDomain, Type aType)
+        private static Type GetType (this AppDomain aAppDomain, Type aType, string name)
         {
-            var assemblies = aAppDomain.GetAssemblies ();
-            return (from assembly in assemblies from type in assembly.GetTypes () where type.IsSubclassOf (aType) select type).ToArray ();
+            var        assemblies   = aAppDomain.GetAssemblies ();
+            return assemblies.SelectMany (assembly => assembly.GetTypes ()).FirstOrDefault (type => type.IsSubclassOf (aType) && type.Name == name);
         }
 
         private static Rect GetEditorMainWindowPos ()
         {
-            var containerWinType = AppDomain.CurrentDomain.GetAllDerivedTypes (typeof (ScriptableObject))
-                .FirstOrDefault (t => t.Name == "ContainerWindow");
+            var containerWinType =
+                AppDomain.CurrentDomain.GetType (typeof (ScriptableObject), "ContainerWindow");
             if (containerWinType == null)
                 throw new MissingMemberException (
                     "Can't find internal type ContainerWindow. Maybe something has changed inside Unity");

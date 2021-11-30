@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace EditorSpotlight
 {
-    public class EditorSpotlight : EditorWindow, IHasCustomMenu
+    public class EditorSpotlight : EditorWindow
     {
         private static class Styles
         {
@@ -58,7 +58,7 @@ namespace EditorSpotlight
             }
         }
 
-        [MenuItem("Window/Spotlight %k")]
+        [MenuItem("Window/Spotlight/Open %k")]
         private static void Init()
         {
             var window = CreateInstance<EditorSpotlight>();
@@ -435,19 +435,18 @@ namespace EditorSpotlight
             position   = pos;
         }
 
-        public void AddItemsToMenu(GenericMenu menu)
+        [MenuItem ("Window/Spotlight/Clear History")]
+        private static void ResetHistory ()
         {
-            menu.AddItem(new GUIContent("Reset history"), false, () =>
-            {
-                EditorPrefs.SetString(SearchHistoryKey, JsonUtility.ToJson(new SearchHistory()));
-                Reset();
-            });
-
-            menu.AddItem(new GUIContent("Output history"), false, () =>
-            {
-                var json = EditorPrefs.GetString(SearchHistoryKey, JsonUtility.ToJson(new SearchHistory()));
-                Debug.Log(json);
-            });
+            EditorPrefs.SetString(SearchHistoryKey, JsonUtility.ToJson(new SearchHistory()));
+            Debug.Log ("Clear success");
+        }
+        
+        [MenuItem ("Window/Spotlight/Output History")]
+        private static void OutputHistory ()
+        {
+            var json = EditorPrefs.GetString(SearchHistoryKey, JsonUtility.ToJson(new SearchHistory()));
+            Debug.Log(json);
         }
     }
 }
