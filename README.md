@@ -8,6 +8,7 @@ Simple macOS-like Spotlight file search in Unity. It shows your most opened file
 > 4. Dealing with window not being displayed in the middle of non-full screen or multi-screen development (TODO)
 > 5. Support SearchFilter (TODO)
 > 6. Support scrolling list
+> 7. Search icon
 
 ### 在作者原有基础上做了一些小修改和小优化 （基于 Unity 2018.4.27)
 > 1. 打开搜索框时解锁 Project 窗口（不然定位文件时，不会自动滑动 Project 窗口)
@@ -16,5 +17,6 @@ Simple macOS-like Spotlight file search in Unity. It shows your most opened file
 > 4. 处理在非全屏或多屏幕开发时窗口不局中显示
 > 5. 支持 SearchFilter (TODO)
 > 6. 支持滚动列表
+> 7. 搜索图标🤪
 
 ![gif](https://i.giphy.com/media/3ohs4lLUapZ9D19poA/source.gif)

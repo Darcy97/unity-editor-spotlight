@@ -36,7 +36,7 @@ namespace EditorSpotlight
             {
                 inputFieldStyle = new GUIStyle(EditorStyles.textField)
                                   {
-                                      contentOffset = new Vector2(10, 10),
+                                      contentOffset = new Vector2(54, 10),
                                       fontSize      = 32,
                                       focused       = new GUIStyleState()
                                   };
@@ -208,8 +208,15 @@ namespace EditorSpotlight
 
             if (string.IsNullOrEmpty(input))
                 GUI.Label(GUILayoutUtility.GetLastRect(), PlaceholderInput, Styles.placeholderStyle);
+            
+            var rect = GUILayoutUtility.GetLastRect ();
+            rect.x     += 15;
+            rect.width =  30;
+            var icon = AssetDatabase.LoadAssetAtPath<Texture> ("Assets/EditorSpotlight/Editor/Icon.png");
+            GUI.DrawTexture(rect, icon, ScaleMode.ScaleToFit);
         
             GUILayout.BeginHorizontal ();
+            GUILayout.Space (6);
             _autoHighlightFile = GUILayout.Toggle (_autoHighlightFile, "Highlight", GUILayout.Width (70));
             GUILayout.Space (1);
             _autoOpenFile = GUILayout.Toggle (_autoOpenFile, "Open");
