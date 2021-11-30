@@ -10,7 +10,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Editor.EditorSpotlight
+namespace EditorSpotlight
 {
     public static class Extensions
     {

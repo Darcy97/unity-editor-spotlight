@@ -14,7 +14,7 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.EditorSpotlight
+namespace EditorSpotlight
 {
     public class EditorSpotlight : EditorWindow, IHasCustomMenu
     {
