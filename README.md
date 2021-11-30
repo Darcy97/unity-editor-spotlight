@@ -12,5 +12,6 @@ Simple macOS-like Spotlight file search in Unity. It shows your most opened file
 > 2. 增加高亮和打开文件可选开关，因为定位有些文件时习惯用 Enter 选中，但是有些文件打开会自动启用一些外部工具，很烦
 > 3. 处理无搜索结果时按 Enter 结束检索报错
 > 4. 处理在非全屏或多屏幕开发时窗口不局中显示
+> 5. 支持 SearchFilter (TODO)
 
 ![gif](https://i.giphy.com/media/3ohs4lLUapZ9D19poA/source.gif)
