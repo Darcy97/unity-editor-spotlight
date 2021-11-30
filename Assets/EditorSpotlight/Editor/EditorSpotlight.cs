@@ -66,13 +66,9 @@ namespace EditorSpotlight
             var pos = window.position;
             pos.height = BaseHeight;
             pos.width  = 500;
-            // pos.xMin = Screen.currentResolution.width / 2 - 500 / 2;
-            // pos.yMin = Screen.currentResolution.height * .3f;
             window.position = pos;
             window.EnforceWindowSize();
-            window.CenterOnMainWin ();
             window.ShowUtility();
-            window.CenterOnMainWin ();
 
             window.Reset();
         }
