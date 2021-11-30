@@ -8,6 +8,7 @@
 
 using System;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace EditorSpotlight
@@ -48,15 +49,26 @@ namespace EditorSpotlight
                 "Can't find internal main window. Maybe something has changed inside Unity");
         }
 
-        public static void CenterOnMainWin (this UnityEditor.EditorWindow aWin)
+        public static void CenterOnMainWin (this EditorWindow window)
         {
             var main = GetEditorMainWindowPos ();
-            var pos  = aWin.position;
+            var pos  = window.position;
             var w    = (main.width  - pos.width)  * 0.5f;
             var h    = (main.height - pos.height) * 0.5f;
             pos.x         = main.x + w;
             pos.y         = main.y + h;
-            aWin.position = pos;
+            window.position = pos;
+        }
+
+        public static void SetYPosPercentMonMainWin (this EditorWindow window, float percent)
+        {
+            var main = GetEditorMainWindowPos ();
+            var pos  = window.position;
+            var w    = (main.width  - pos.width)  * 0.5f;
+            var h    = (main.height - pos.height) * percent;
+            pos.x        = main.x + w;
+            pos.y        = main.y + h;
+            window.position = pos;
         }
     }
 }

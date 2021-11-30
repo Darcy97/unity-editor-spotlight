@@ -144,9 +144,10 @@ namespace EditorSpotlight
             }
         }
 
-        const        string PlaceholderInput = "Search Asset...";
-        const        string SearchHistoryKey = "SearchHistoryKey";
-        public const int    BaseHeight       = 100;
+        const         string PlaceholderInput    = "Search Asset...";
+        const         string SearchHistoryKey    = "SearchHistoryKey";
+        public const  int    BaseHeight          = 100;
+        private const int    VisibleCountPerView = 6;
 
         List<string> hits = new List<string>();
         string       input;
@@ -173,6 +174,8 @@ namespace EditorSpotlight
 
         private int _count;
 
+        private Vector2 _scrollPos;
+
         void OnGUI()
         {
             EnforceWindowSize();
@@ -181,7 +184,7 @@ namespace EditorSpotlight
             // 可能由于调用时序关系，在这里重置几次位置才能保证居中
             if (_count < 5)
             {
-                this.CenterOnMainWin ();
+                this.SetYPosPercentMonMainWin (0.3f);
                 _count++;
             }
 
@@ -256,7 +259,7 @@ namespace EditorSpotlight
                 return yScore - xScore;
             });
 
-            hits = hits.Take(10).ToList();
+            // hits = hits.Take(10).ToList();
         }
 
         void HandleEvents()
@@ -291,7 +294,8 @@ namespace EditorSpotlight
 
             var windowRect = this.position;
             windowRect.height = BaseHeight;
-
+            
+            _scrollPos = EditorGUILayout.BeginScrollView (_scrollPos, GUILayout.Height (EditorGUIUtility.singleLineHeight * 2 * VisibleCountPerView));
             GUILayout.BeginVertical();
             GUILayout.Space(5);
 
@@ -312,7 +316,8 @@ namespace EditorSpotlight
 
                 GUILayout.EndHorizontal();
 
-                windowRect.height += EditorGUIUtility.singleLineHeight * 2;
+                if(i < VisibleCountPerView) 
+                    windowRect.height += EditorGUIUtility.singleLineHeight * 2;
 
                 if (current.type == EventType.Repaint)
                 {
@@ -381,6 +386,7 @@ namespace EditorSpotlight
             position          =  windowRect;
 
             GUILayout.EndVertical();
+            EditorGUILayout.EndScrollView ();
         }
 
         void OpenSelectedAssetAndClose()
