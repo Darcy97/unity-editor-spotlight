@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEditor;
@@ -63,6 +64,48 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
 
         window.Reset();
     }
+    
+    private void OnBecameVisible ()
+    {
+        LoadConfig ();
+        UnLockProjectWindow ();
+    }
+
+    private void UnLockProjectWindow ()
+    {
+        var typeInspector = typeof (EditorWindow).Assembly.GetType ("UnityEditor.ProjectBrowser");
+        var w             = focusedWindow;
+        if (!typeInspector.IsInstanceOfType (w))
+        {
+            w = null;
+            var objs               = Resources.FindObjectsOfTypeAll (typeInspector);
+            if (objs.Length > 0) w = objs[0] as EditorWindow;
+        }
+
+        if (w == null)
+            return;
+        var propertyInfo = typeInspector.GetProperty ("isLocked", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (propertyInfo == null)
+            return;
+        propertyInfo.SetValue (w, false, null);
+        w.Repaint ();
+    }
+
+    private void OnDestroy ()
+    {
+        EditorPrefs.SetBool ("EditorSpotLightAutoHighlight", _autoHighlightFile);
+        EditorPrefs.SetBool ("EditorSpotLightAutoOpenFile",  _autoOpenFile);
+
+        EditorPrefs.SetFloat ("EditorSpotLightPosX", position.x);
+        EditorPrefs.SetFloat ("EditorSpotLightPosY", position.y);
+    }
+
+    private void LoadConfig ()
+    {
+        _autoHighlightFile = EditorPrefs.GetBool ("EditorSpotLightAutoHighlight", true);
+        _autoOpenFile      = EditorPrefs.GetBool ("EditorSpotLightAutoOpenFile",  true);
+    }
+
 
     [Serializable] private class SearchHistory : ISerializationCallbackReceiver
     {
@@ -93,9 +136,9 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
         }
     }
 
-    const string PlaceholderInput = "Open Asset...";
+    const string PlaceholderInput = "Search Asset...";
     const string SearchHistoryKey = "SearchHistoryKey";
-    public const int BaseHeight = 90;
+    public const int BaseHeight = 100;
 
     List<string> hits = new List<string>();
     string input;
@@ -116,6 +159,9 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
     {
         Close();
     }
+    
+    private bool _autoOpenFile      = true;
+    private bool _autoHighlightFile = true;
 
     void OnGUI()
     {
@@ -143,6 +189,12 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
 
         if (string.IsNullOrEmpty(input))
             GUI.Label(GUILayoutUtility.GetLastRect(), PlaceholderInput, Styles.placeholderStyle);
+        
+        GUILayout.BeginHorizontal ();
+        _autoHighlightFile = GUILayout.Toggle (_autoHighlightFile, "Highlight");
+        GUILayout.Space (1);
+        _autoOpenFile = GUILayout.Toggle (_autoOpenFile, "Open");
+        GUILayout.EndHorizontal ();
 
         GUILayout.BeginHorizontal();
         GUILayout.Space(6);
@@ -195,7 +247,7 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
     {
         var current = Event.current;
 
-        if (current.type == EventType.keyDown)
+        if (current.type == EventType.KeyDown)
         {
             if (current.keyCode == KeyCode.UpArrow)
             {
@@ -294,7 +346,7 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
                 GUI.Label(labelRect, coloredAssetName.ToString(), Styles.resultLabelStyle);
             }
 
-            if (current.type == EventType.mouseDown && elementRect.Contains(current.mousePosition))
+            if (current.type == EventType.MouseDown && elementRect.Contains(current.mousePosition))
             {
                 selectedIndex = i;
                 if (current.clickCount == 2)
@@ -319,8 +371,15 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
     {
         Close();
         if (hits.Count <= selectedIndex) return;
+        
+        var select = GetSelectedAsset ();
+        if (select == null)
+        {
+            return;
+        }
 
-        AssetDatabase.OpenAsset(GetSelectedAsset());
+        if (_autoOpenFile)
+            AssetDatabase.OpenAsset (select);
 
         var guid = hits[selectedIndex];
         if (!history.clicks.ContainsKey(guid))
@@ -332,6 +391,11 @@ public class EditorSpotlight : EditorWindow, IHasCustomMenu
 
     UnityEngine.Object GetSelectedAsset()
     {
+        if (hits.Count < 1 || selectedIndex < 0)
+        {
+            return null;
+        }
+        
         var assetPath = AssetDatabase.GUIDToAssetPath(hits[selectedIndex]);
         return (AssetDatabase.LoadMainAssetAtPath(assetPath));
     }
