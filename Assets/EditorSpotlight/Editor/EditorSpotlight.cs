@@ -146,7 +146,7 @@ namespace EditorSpotlight
 
         const         string PlaceholderInput    = "Search Asset...";
         const         string SearchHistoryKey    = "SearchHistoryKey";
-        public const  int    BaseHeight          = 100;
+        public const  int    BaseHeight          = 110;
         private const int    VisibleCountPerView = 6;
 
         List<string> hits = new List<string>();
@@ -279,11 +279,20 @@ namespace EditorSpotlight
                 {
                     current.Use();
                     selectedIndex--;
+                    
+                    if (selectedIndex < 0)
+                        selectedIndex = 0;
+                    
+                    AutoScroll ();
                 }
                 else if (current.keyCode == KeyCode.DownArrow)
                 {
                     current.Use();
                     selectedIndex++;
+                    if (selectedIndex >= hits.Count)
+                        selectedIndex = hits.Count - 1;
+                    
+                    AutoScroll ();
                 }
                 else if (current.keyCode == KeyCode.Return)
                 {
@@ -295,6 +304,37 @@ namespace EditorSpotlight
             }
         }
 
+        private void AutoScroll ()
+        {
+            var cellHeight    = EditorGUIUtility.singleLineHeight * 2;
+            var index         = selectedIndex;
+            var posYMin       = index * cellHeight;
+            var posYMax       = posYMin + cellHeight;
+            var visibleYStart = _scrollPos.y;
+            var visibleYEnd   = VisibleCountPerView * cellHeight + _scrollPos.y;
+            
+            // Debug.Log ("cur item posY: " + posYMin);
+            // Debug.Log ("visibleYStart: " + visibleYStart);
+            // Debug.Log ("visibleYEnd: " + visibleYEnd);
+
+            if (posYMin < visibleYStart)
+            {
+                _scrollPos.y -= visibleYStart - posYMin + 5;
+                if (_scrollPos.y < 0)
+                    _scrollPos.y = 0;
+                return;
+            }
+
+            if (posYMax > visibleYEnd)
+            {
+                _scrollPos.y += posYMax - visibleYEnd + 5;
+                var maxY = (hits.Count - VisibleCountPerView) * cellHeight;
+                if (_scrollPos.y > maxY)
+                    _scrollPos.y = maxY;
+            }
+
+        }
+
         void VisualizeHits()
         {
             var current = Event.current;
@@ -302,9 +342,14 @@ namespace EditorSpotlight
             var windowRect = this.position;
             windowRect.height = BaseHeight;
             
-            _scrollPos = EditorGUILayout.BeginScrollView (_scrollPos, GUILayout.Height (EditorGUIUtility.singleLineHeight * 2 * VisibleCountPerView));
+            
             GUILayout.BeginVertical();
-            GUILayout.Space(5);
+            
+            GUILayout.Space(2);
+
+            _scrollPos = EditorGUILayout.BeginScrollView (_scrollPos, GUILayout.Height (EditorGUIUtility.singleLineHeight * 2 * VisibleCountPerView + 10));
+            
+            GUILayout.Space (5);
 
             if (hits.Count == 0)
             {
@@ -388,12 +433,16 @@ namespace EditorSpotlight
                     Repaint();
                 }
             }
+            
+            GUILayout.Space (5);
 
+            EditorGUILayout.EndScrollView ();
+            
             windowRect.height += 5;
             position          =  windowRect;
+            
 
             GUILayout.EndVertical();
-            EditorGUILayout.EndScrollView ();
         }
 
         void OpenSelectedAssetAndClose()
