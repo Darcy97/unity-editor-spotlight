@@ -211,7 +211,7 @@ namespace Editor.EditorSpotlight
                 GUI.Label(GUILayoutUtility.GetLastRect(), PlaceholderInput, Styles.placeholderStyle);
         
             GUILayout.BeginHorizontal ();
-            _autoHighlightFile = GUILayout.Toggle (_autoHighlightFile, "Highlight", GUILayout.Width (50));
+            _autoHighlightFile = GUILayout.Toggle (_autoHighlightFile, "Highlight", GUILayout.Width (70));
             GUILayout.Space (1);
             _autoOpenFile = GUILayout.Toggle (_autoOpenFile, "Open");
             GUILayout.EndHorizontal ();
@@ -400,6 +400,13 @@ namespace Editor.EditorSpotlight
 
             if (_autoOpenFile)
                 AssetDatabase.OpenAsset (select);
+
+            if (_autoHighlightFile)
+            {
+                EditorUtility.FocusProjectWindow ();
+                Selection.activeObject = select;
+                EditorGUIUtility.PingObject (select);
+            }
 
             var guid = hits[selectedIndex];
             if (!history.clicks.ContainsKey(guid))

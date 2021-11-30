@@ -32,7 +32,7 @@ namespace Editor.EditorSpotlight
             var positionProperty = containerWinType.GetProperty ("position",
                 System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             if (showModeField == null || positionProperty == null)
-                throw new System.MissingFieldException (
+                throw new MissingFieldException (
                     "Can't find internal fields 'm_ShowMode' or 'position'. Maybe something has changed inside Unity");
             var windows = Resources.FindObjectsOfTypeAll (containerWinType);
             foreach (var win in windows)
@@ -44,7 +44,7 @@ namespace Editor.EditorSpotlight
                 return pos;
             }
 
-            throw new System.NotSupportedException (
+            throw new NotSupportedException (
                 "Can't find internal main window. Maybe something has changed inside Unity");
         }
 
