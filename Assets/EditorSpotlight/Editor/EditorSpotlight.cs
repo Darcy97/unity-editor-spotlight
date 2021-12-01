@@ -22,7 +22,7 @@ namespace EditorSpotlight
         private const string SearchHistoryKey    = "SearchHistoryKey";
         private const int    BaseHeight          = 110;
         private const int    VisibleCountPerView = 6;
-        private const int    ShowPage = 10;
+        private const int    ShowPage            = 10;
 
         [MenuItem ("Window/Spotlight/Clear History")]
         private static void ResetHistory ()
@@ -218,9 +218,9 @@ namespace EditorSpotlight
         {
             var current = Event.current;
 
-            if (current.type != EventType.KeyDown) 
+            if (current.type != EventType.KeyDown)
                 return;
-            
+
             switch (current.keyCode)
             {
                 case KeyCode.UpArrow:
@@ -245,7 +245,7 @@ namespace EditorSpotlight
                     break;
                 }
                 case KeyCode.Return:
-                    OpenSelectedAssetAndClose ();
+                    OpenSelectedAssetAndClose (current.shift);
                     current.Use ();
                     break;
                 case KeyCode.Escape:
@@ -371,7 +371,7 @@ namespace EditorSpotlight
                 {
                     selectedIndex = i;
                     if (current.clickCount == 2)
-                        OpenSelectedAssetAndClose ();
+                        OpenSelectedAssetAndClose (false);
                     else
                     {
                         Selection.activeObject = GetSelectedAsset ();
@@ -393,7 +393,7 @@ namespace EditorSpotlight
             GUILayout.EndVertical ();
         }
 
-        private void OpenSelectedAssetAndClose ()
+        private void OpenSelectedAssetAndClose (bool withShift)
         {
             Close ();
             if (hits.Count <= selectedIndex) return;
@@ -404,7 +404,7 @@ namespace EditorSpotlight
                 return;
             }
 
-            if (_autoOpenFile)
+            if (_autoOpenFile && !withShift || !_autoOpenFile && withShift)
                 AssetDatabase.OpenAsset (select);
 
             if (_autoHighlightFile)
