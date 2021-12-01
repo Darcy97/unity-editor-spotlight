@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace EditorSpotlight
 {
@@ -20,7 +21,7 @@ namespace EditorSpotlight
 
         private const string PlaceholderInput    = "Search Asset...";
         private const string SearchHistoryKey    = "SearchHistoryKey";
-        private const int    BaseHeight          = 110;
+        private const int    BaseHeight          = 100;
         private const int    VisibleCountPerView = 6;
         private const int    ShowPage            = 10;
 
@@ -386,7 +387,7 @@ namespace EditorSpotlight
 
             EditorGUILayout.EndScrollView ();
 
-            windowRect.height += 5;
+            windowRect.height += 15;
             position          =  windowRect;
 
 
