@@ -1,7 +1,8 @@
 # unity-editor-spotlight
 Simple macOS-like Spotlight file search in Unity. It shows your most opened files first. The more you use it, the better it gets. Use it with cmd+k on macOS, ctrl+k on Windows.
 
-### Made some minor modifications and minor optimizations on the basis of the author's original (Based on Unity 2018.4.27)
+### [Made some minor modifications and minor optimizations on the basis of the author's original (Based on Unity 2018.4.27)](https://github.com/Darcy97/unity-editor-spotlight)
+
 > 1. Unlock the Project window when the search box is opened (otherwise, the Project window will not automatically slide when locating the file)
 > 2. Added the optional switch for highlighting and opening files, because when locating some files, I used to use Enter to select them, but some files will be opened automatically to enable some external tools, which is very annoying
 > 3. Processing When there is no search result, press Enter to end the search and report an error
