@@ -11,6 +11,7 @@ Simple macOS-like Spotlight file search in Unity. It shows your most opened file
 > 6. Support scrolling list
 > 7. Search icon
 > 8. Hold down the "Shift" key when you hit enter to flip the "Open" switch
+> 9. End... I found that `Unity` officially has a very powerful search plugin - [QuickSerach](https://docs.unity3d.com/Packages/com.unity.quicksearch@1.5/manual/index.html)
 
 ### 在作者原有基础上做了一些小修改和小优化 （基于 Unity 2018.4.27)
 > 1. 打开搜索框时解锁 Project 窗口（不然定位文件时，不会自动滑动 Project 窗口)
@@ -21,5 +22,6 @@ Simple macOS-like Spotlight file search in Unity. It shows your most opened file
 > 6. 支持滚动列表
 > 7. 搜索图标🤪
 > 8. 按下回车键时按住 "Shift" 键可反转 "Open" 开关
+> 9. End... 发现 `Unity` 官方有一个非常强大的搜索插件 - [QuickSerach](https://docs.unity3d.com/Packages/com.unity.quicksearch@1.5/manual/index.html)
 
 ![gif](https://i.giphy.com/media/3ohs4lLUapZ9D19poA/source.gif)
