@@ -6,7 +6,7 @@ Simple macOS-like Spotlight file search in Unity. It shows your most opened file
 > 1. Unlock the Project window when the search box is opened (otherwise, the Project window will not automatically slide when locating the file)
 > 2. Added the optional switch for highlighting and opening files, because when locating some files, I used to use Enter to select them, but some files will be opened automatically to enable some external tools, which is very annoying
 > 3. Processing When there is no search result, press Enter to end the search and report an error
-> 4. Dealing with window not being displayed in the middle of non-full screen or multi-screen development (TODO)
+> 4. Dealing with window not being displayed in the middle of non-full screen or multi-screen development
 > 5. Support SearchFilter (TODO)
 > 6. Support scrolling list
 > 7. Search icon
